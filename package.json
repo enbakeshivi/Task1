@@ -1,0 +1,14 @@
+{
+	"name": "Shivi-Nodejs-App",
+	"version": "1.0.0",
+	"dependencies": {
+		"body-parser": "^1.18.2",
+		"cookie-parser": "^1.4.3",
+		"ejs": "^2.5.9",
+		"express": "4.0.0",
+		"express-session": "^1.15.6",
+		"mongoose": "^5.0.17",
+		"mysql": "2.15.0",
+		"pug": "2.0.3"
+	}
+}

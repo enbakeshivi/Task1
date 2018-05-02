@@ -1,0 +1,64 @@
+.button{
+	border-radius: 1px;
+	background-color: green;
+	color: white;
+	size: 67px;
+	text-decoration: none
+}
+
+.main{
+	margin-top: :40px;
+}
+
+
+
+body {
+  font: 14px;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.btn-green{
+	  background-color: #28D3AB !important;
+}
+
+.section{
+
+	padding-top: 50px;
+	padding-bottom: 50px;
+}
+
+.main_div{
+  height: auto !important; /* real browsers */
+  min-height: 100vh;
+  background-color: #6a5acd;
+}
+
+.f{
+background-color: white; 
+padding: 5%;
+/*margin-top:5vw; */
+/*margin-left: 30%; */
+/*margin-right: 30%; */
+/*margin-bottom: 3vw; */
+border-radius: 6px;
+/*max-width: 40%;*/
+}
+
+.form-control{
+    border: none !important;
+    border-bottom: 2px solid #d8d8d8 !important;
+}
+
+i
+{
+	color: white
+}
+
+label{
+	color: grey
+}
+
+

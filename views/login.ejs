@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  </head>
+  <body style="min-height: 100%">
+  
+
+  <div ng-app="myApp" ng-controller="formCtrl">
+
+   <!-- main div -->
+   <div class="container-fluid main_div">
+       <!-- top home icon -->
+   <section>
+   	<div class="row">
+   	<div class = "col-sm-12">
+   	<div >
+   	<a style ="font-size: 50px; color: white" class="material-icons"  href ="home.html">home</a>
+   	<a></a>
+   	</div>
+   	</div>
+   	</div>
+
+
+   </section>
+
+       <!-- another section -->
+    <section>
+    	<div align="center" >
+    	 <span style="color: white; font-weight: bold ; font-size:3vw;"><%= val %></span> 
+    	 </div>
+       <br>
+    </section>
+
+<div class="col-xs-4"> </div>
+     <!-- form section -->
+    <section>
+    	<div class="row">
+          <div align="center" class =" col-xs-4 center-block f">
+          <form ng-submit="submit(data)">
+           <div class="form-group">
+             
+             <input type="email" class="form-control" placeholder="email" id="email" ng-model="data.email">
+            </div>
+            <br>
+
+             <div class="form-group">
+             
+             <input type="password" class="form-control" id="pwd" placeholder="password" name="pwd" ng-model="data.password">
+             </div>
+             <br>
+             <br>
+             <button type="submit" class="btn btn-block btn-green">Submit</button>
+             </form>
+    	</div>
+        </div>
+
+    
+
+    </section>
+
+    <div class="col-xs-4"> </div>
+    </div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <script type="text/javascript">
+      
+    var app = angular.module('myApp', []);
+    app.controller('formCtrl', function($scope) {
+
+    $scope.data = {};
+    $scope.submit = function(data){
+     console.log("aaaaaaaaaa" , data)
+    }
+
+    });
+    </script>
+
+</body>
+</html>
+
+
+
+
+
