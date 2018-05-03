@@ -46,6 +46,10 @@
           <form ng-submit="submit(data)">
            <div class="form-group">
              
+             <input class="form-control" placeholder="name" id="name" ng-model="data.name">
+            </div>
+           <div class="form-group">
+             
              <input type="email" class="form-control" placeholder="email" id="email" ng-model="data.email">
             </div>
             <br>
@@ -84,15 +88,17 @@
     var app = angular.module('myApp', []);
     app.controller('formCtrl', function($scope ,$http) {
 
-    $scope.data = {};
     $scope.submit = function(data){
-     console.log("aaaaaaaaaa" , data)
+     console.log("aaaaaaaiiaaa" , data)
 
-      $http.post("/login",data)
+      $http.post("/register",data)
       .then(function(response) {
-        alert(response)
-        // $scope.myWelcome = response.data;
-       });
+        console.log(response.data)
+        $scope.myWelcome = response.data;
+        console.log("i came here" , $scope.myWelcome)
+       }).catch(function(err){
+        console.log(err.data.msg);
+       })
 
     }
 
