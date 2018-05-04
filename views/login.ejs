@@ -93,7 +93,9 @@
         
         $scope.myWelcome = response.data.msg;
         alert(myWelcome);
-        // $window.location.href = '/dashboard';
+        if($scope.myWelcome=="ok"){
+        $window.location.href = '/dashboard';
+      }
        });
 
     }

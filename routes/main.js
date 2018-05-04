@@ -32,7 +32,7 @@ app.post('/login', function(req, res, next) {
 
         else
         {
-         res.redirect('dashboard.ejs')}
+         res.send(200,{msg:"ok"})}
         
     });
   })
