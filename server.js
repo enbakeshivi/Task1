@@ -74,6 +74,6 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 // app listen
 
-app.listen(5000,function(){
+app.listen(process.env.PORT || 8080,function(){
 	console.log("Nodejs Server listening on port 5000.")
 })
