@@ -63,6 +63,7 @@ userSchema.methods.comparePassword = function (candidatePassword, cb) {
 
 // the schema is useless so far
 // we need to create a model using it
+
 var Users = mongoose.model('Users', userSchema);
 
 // make this available to our users in our Node applications

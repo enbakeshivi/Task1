@@ -90,8 +90,10 @@
 
       $http.post("/login",data)
       .then(function(response) {
-        alert(response)
-        // $scope.myWelcome = response.data;
+        
+        $scope.myWelcome = response.data.msg;
+        alert(myWelcome);
+        // $window.location.href = '/dashboard';
        });
 
     }

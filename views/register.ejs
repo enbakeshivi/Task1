@@ -86,7 +86,7 @@
     <script type="text/javascript">
       
     var app = angular.module('myApp', []);
-    app.controller('formCtrl', function($scope ,$http) {
+    app.controller('formCtrl', function($scope ,$http,$window) {
 
     $scope.submit = function(data){
      console.log("aaaaaaaiiaaa" , data)
@@ -94,10 +94,12 @@
       $http.post("/register",data)
       .then(function(response) {
         console.log(response.data)
-        $scope.myWelcome = response.data;
-        console.log("i came here" , $scope.myWelcome)
+        $scope.myWelcome = response.data.msg;
+        alert($scope.myWelcome);
+        
+        $window.location.href = '/login';
        }).catch(function(err){
-        console.log(err.data.msg);
+        alert(err.data.msg);
        })
 
     }

@@ -30,7 +30,7 @@ app.use(logger('dev'));
 
 
 
-app.use(session({ secret: '$#%!@#@@#SSDASASDVV@@@@', key: 'sid'}));
+app.use(session({ secret: '$#%!@#@@#SSDASASDVV@@@@', resave:true , saveUninitialized :false}));
 app.use(express.static(__dirname + '/public'));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -40,7 +40,6 @@ require('./routes/main.js')(app);
 //model
 var Users = require('./models/user.js');
 var Tasks = require('./models/task.js');
-
 
 
 

@@ -12,7 +12,6 @@ app.get('/' ,function(req,res,next){
 
 app.get('/logout', function(req, res) {
 	    res.redirect('/');
-        req.logout();
        
     });
 
@@ -21,6 +20,26 @@ app.get('/login',function(req,res){
 	res.render('login.ejs',{val:"LOGIN"})
 
 });
+
+
+app.post('/login', function(req, res, next) {
+  Users.findOne({email:req.body.email},function(err,u){
+  	console.log(u);
+  	u.comparePassword(req.body.password,function(err, isMatch) {
+        if (err){
+         res.send(500 ,{msg:"Wrong Credentials"})
+        }
+
+        else
+        {
+         res.redirect('dashboard.ejs')}
+        
+    });
+  })
+});
+
+
+
 
 app.get('/register' ,function(req,res){
    res.render('register.ejs',{val:"REGISTER"})
@@ -124,8 +143,10 @@ app.post('/register' ,function(req,res){
 	  }
       else{
 
-	  console.log('User created!');
-	  res.send(200 ,{msg:"User created"})
+	      console.log('User created!');
+          res.send(200 ,{msg:"User created"})
+        
+	  
       }
 	});
 })
