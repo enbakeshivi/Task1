@@ -6,6 +6,7 @@ var session = require('express-session');
 var mongoose = require('mongoose');
 var logger = require('morgan');
 var passport = require('passport')
+var LocalStrategy = require('passport-local').Strategy;
 
 
 
@@ -24,7 +25,7 @@ app.engine('html',require('ejs').renderFile)
 
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({extended:true}));
 app.use(cookieParser());
 app.use(logger('dev'));
 
@@ -74,6 +75,6 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 
 // app listen
 
-app.listen(process.env.PORT || 8080,function(){
+app.listen(process.env.PORT || 5000,function(){
 	console.log("Nodejs Server listening on port 5000.")
 })

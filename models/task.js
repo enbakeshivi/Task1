@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 
 // create a schema
 var taskSchema = new Schema({
+  user_id:{type: Schema.Types.ObjectId, ref: 'Users'},
   name: {type: String, required:  [true, 'Task name is required']},
   description: { type: String},
 });

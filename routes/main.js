@@ -11,9 +11,9 @@ app.get('/' ,function(req,res,next){
 });
 
 app.get('/logout', function(req, res) {
-	    res.redirect('/');
-       
-    });
+  req.logout();
+  res.redirect('/');
+});
 
 
 app.get('/login',function(req,res){
@@ -46,12 +46,20 @@ app.get('/register' ,function(req,res){
 });
 
 app.get('/dashboard' , function(req,res){
-   res.render('dashboard.ejs')
+	if(req.isAuthenticated()){
+		res.render('dashboard.ejs')
+	}
+	else{
+		res.render('login1.ejs')
+	}
+   
 });
 
 app.post('/add' ,function(req,res){
-	console.log(req.body);
+	console.log(req.isAuthenticated() ,req.user);
+	console.log(req.user);
 	     var newTask = Task({
+	      user_id:req.user._id,
 	      name:req.body.name,
 	      description :req.body.description
 	});
@@ -72,7 +80,7 @@ app.post('/add' ,function(req,res){
 
 
 app.get('/all',function(req,res){
-	  Task.find({}, function(err, tasks) {
+	  Task.find({user_id:req.user._id}, function(err, tasks) {
 	  	console.log(tasks);
 	  	res.send(tasks)
 	  })
@@ -152,79 +160,122 @@ app.post('/register' ,function(req,res){
 })
 
 
+app.post('/register1' ,function(req,res){
+   console.log(req.body);
+   	var p = {
+	  username: req.body.name,
+	  email :req.body.email,
+	  password:req.body.password
+	}
+
+	console.log("pppp" ,p)
+	var newUser = Users(p);
+
+ //    var newUser = Users({
+	//   username: 'starlord55',
+	//   email :'shivigoel75965@gm.com',
+	//   password:'2222222'
+	// });
+
+	// save the user
+	newUser.save(function(err) {
+	  if (err) {
+	  	  console.log("errr" ,err);
+	  	  if(err.name=='BulkWriteError'){
+            res.send(500,{msg:'Email already taken'})
+	  	  }
+	  	  else{
+	  	  	res.send(500,{msg:err.message})
+	  	  }
+	  	  
+	  }
+      else{
+
+	      console.log('User created!');
+          res.send(200 ,{msg:"User created"})
+        
+	  
+      }
+	});
+})
+
+app.get('/register1' ,function(req,res){
+   res.render('register1.ejs')
+});
 
 
 
 
+//Handling inside the fcn only second way of handling passport js 
 
-
- //    passport.serializeUser(function(user, done) {
- //        done(null, user.id);
- //    });
-
- //    // used to deserialize the user
- //    passport.deserializeUser(function(id, done) {
- //        User.findById(id, function(err, user) {
- //            done(err, user);
- //        });
- //    });
-
-
- //    passport.use('local-signup', new LocalStrategy({
- //        // by default, local strategy uses username and password, we will override with email
- //        usernameField : 'email',
- //        passwordField : 'password',
- //        passReqToCallback : true // allows us to pass back the entire request to the callback
- //    },
- //    function(req, email, password, done) {
-
- //        // asynchronous
- //        // User.findOne wont fire unless data is sent back
- //        process.nextTick(function() {
-
- //        // find a user whose email is the same as the forms email
- //        // we are checking to see if the user trying to login already exists
-   
- //                var newUser            = new Users({	
-	//                                       username: req.body.name,
-	//                                       email :req.body.email,
-	//                                       password:req.body.password
-	//                                       });
- //                // newUser.local.email    = email;
- //                // newUser.local.password = newUser.generateHash(password);
-
- //                // save the user
- //                newUser.save(function(err) {
- //                    if (err){
- //                     return done(null,err)
- //                    }
-                       
- //                    return done(null, newUser);
- //                    }
- //                });
-           
- //        });
-
- //    }));
+// app.post('/login', function(req, res, next) {
+//   passport.authenticate('local', function(err, user, info) {
+//     if (err) {
+//       return next(err); // will generate a 500 error
+//     }
+//     // Generate a JSON response reflecting authentication status
+//     if (! user) {
+//       return res.send({ success : false, message : 'authentication failed' });
+//     }
+//     // ***********************************************************************
+//     // "Note that when using a custom callback, it becomes the application's
+//     // responsibility to establish a session (by calling req.login()) and send
+//     // a response."
+//     // Source: http://passportjs.org/docs
+//     // ***********************************************************************
+//     req.login(user, loginErr => {
+//       if (loginErr) {
+//         return next(loginErr);
+//       }
+//       return res.send({ success : true, message : 'authentication succeeded' });
+//     });      
+//   })(req, res, next);
+// });
 
 
 
- // app.post('/register', passport.authenticate('local-signup', {
- //        successRedirect : '/login', // redirect to the secure profile section
- //        failureRedirect : '/register', // redirect back to the signup page if there is an error
- //    }));
+app.get('/login1' ,function(req,res){
+   res.render('login1.ejs')
+});
+
+app.post('/login1', passport.authenticate('local'), function(req, res) {
+  res.redirect('/dashboard');
+});
 
 
+passport.use(new LocalStrategy({usernameField:"email", passwordField:"password"},
+    function(email, password, done) {
+    	console.log(email ,password)
+        Users.findOne({ email: email }, function (err, user) {
+            if(user !== null) {
+                user.comparePassword(password,function(err, isMatch) {
 
+                	if(err){
+                		return done(null, false);
 
+                	}
 
+                	if(isMatch) {
+                    console.log("Username and password correct!");
+                    return done(null, user);
+                    }
+                })
+                
+           } else {
+               console.log("email does not exist!");
+               return done(null, false);
+           }
+       });
+    }
+));
 
+passport.serializeUser(function(user, done) {
+    done(null, user);
+});
 
-
-
-
-
-
+passport.deserializeUser(function(user, done) {
+    done(null, user);
+})
 
 }// module.exports
 
