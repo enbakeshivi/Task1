@@ -1,6 +1,7 @@
 {
 	"name": "Shivi-Nodejs-App",
 	"version": "1.0.0",
+	"scripts": {"start": "node server.js"},
 	"dependencies": {
 		"bcrypt": "^2.0.1",
 		"body-parser": "^1.18.2",
