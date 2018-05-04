@@ -22,12 +22,7 @@ app.engine('html',require('ejs').renderFile)
 
 // middlewares
 
-var myResponse = function (req, res, next) {
-  console.log("aaaaaaaa" ,res.body)
-  next()
-}
 
-app.use(myResponse)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
