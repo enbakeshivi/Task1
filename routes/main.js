@@ -12,7 +12,7 @@ app.get('/' ,function(req,res,next){
 
 app.get('/logout', function(req, res) {
   req.logout();
-  res.render('/');
+  res.render('/login.ejs');
 });
 
 
