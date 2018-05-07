@@ -11,9 +11,11 @@
   </head>
   <body style="min-height: 100%">
   
-
+   <header>
+   <% include header.ejs %>
+   </header>
   <div ng-app="myApp" ng-controller="formCtrl">
-
+  
    <!-- main div -->
    <div class="container-fluid main_div">
        <!-- top home icon -->
@@ -33,7 +35,7 @@
        <!-- another section -->
     <section>
     	<div align="center" >
-    	 <span style="color: white; font-weight: bold ; font-size:3vw;"><%= val %></span> 
+    	 <span style="color: white; font-weight: bold ; font-size:3vw;">REGISTER</span> 
     	 </div>
        <br>
     </section>
@@ -43,20 +45,20 @@
     <section>
     	<div class="row">
           <div align="center" class =" col-xs-4 center-block f">
-          <form ng-submit="submit(data)">
+          <form action="/register" method="post">
            <div class="form-group">
              
-             <input class="form-control" placeholder="name" id="name" ng-model="data.name">
+             <input class="form-control" placeholder="name" id="name" name="name" ng-model="data.name">
             </div>
            <div class="form-group">
              
-             <input type="email" class="form-control" placeholder="email" id="email" ng-model="data.email">
+             <input type="email" class="form-control" placeholder="email" name="email" id="email" ng-model="data.email">
             </div>
             <br>
 
              <div class="form-group">
              
-             <input type="password" class="form-control" id="pwd" placeholder="password" name="pwd" ng-model="data.password">
+             <input type="password" class="form-control" id="pwd" placeholder="password" name="password" ng-model="data.password">
              </div>
              <br>
              <br>
@@ -72,18 +74,21 @@
     <div class="col-xs-4"> </div>
     </div>
 
+    <footer>
+    <% include footer.ejs %>
+    </footer>
+
+
     </div>
+</body>
+</html>
 
 
 
 
 
 
-
-
-
-
-    <script type="text/javascript">
+<!--     <script type="text/javascript">
       
     var app = angular.module('myApp', []);
     app.controller('formCtrl', function($scope ,$http,$window) {
@@ -105,10 +110,9 @@
     }
 
     });
-    </script>
+    </script> -->
 
-</body>
-</html>
+
 
 
 

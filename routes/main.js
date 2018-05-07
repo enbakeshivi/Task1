@@ -7,42 +7,28 @@ var LocalStrategy = require('passport-local').Strategy;
 module.exports= function(app){
 
 app.get('/' ,function(req,res,next){
- res.render('index.ejs',{title:"Welcome"})
+ res.render('login.ejs')
 });
 
 app.get('/logout', function(req, res) {
   req.logout();
-  res.redirect('/');
+  res.render('/');
 });
 
 
 app.get('/login',function(req,res){
-	res.render('login.ejs',{val:"LOGIN"})
+	if(req.isAuthenticated()){
+		res.render('dashboard.ejs')
+	}
+	else{
+		res.render('login.ejs')
+	}
 
 });
-
-
-app.post('/login', function(req, res, next) {
-  Users.findOne({email:req.body.email},function(err,u){
-  	console.log(u);
-  	u.comparePassword(req.body.password,function(err, isMatch) {
-        if (err){
-         res.send(500 ,{msg:"Wrong Credentials"})
-        }
-
-        else
-        {
-         res.send(200,{msg:"ok"})}
-        
-    });
-  })
-});
-
-
 
 
 app.get('/register' ,function(req,res){
-   res.render('register.ejs',{val:"REGISTER"})
+   res.render('register.ejs')
 });
 
 app.get('/dashboard' , function(req,res){
@@ -50,7 +36,7 @@ app.get('/dashboard' , function(req,res){
 		res.render('dashboard.ejs')
 	}
 	else{
-		res.render('login1.ejs')
+		res.render('login.ejs')
 	}
    
 });
@@ -118,49 +104,7 @@ app.post('/delete',function(req,res){
 })
 
 
-
-
 app.post('/register' ,function(req,res){
-	console.log(req.body);
-	var p = {
-	  username: req.body.name,
-	  email :req.body.email,
-	  password:req.body.password
-	}
-
-	console.log("pppp" ,p)
-	var newUser = Users(p);
-
- //    var newUser = Users({
-	//   username: 'starlord55',
-	//   email :'shivigoel75965@gm.com',
-	//   password:'2222222'
-	// });
-
-	// save the user
-	newUser.save(function(err) {
-	  if (err) {
-	  	  console.log("errr" ,err);
-	  	  if(err.name=='BulkWriteError'){
-            res.send(500,{msg:'Email already taken'})
-	  	  }
-	  	  else{
-	  	  	res.send(500,{msg:err.message})
-	  	  }
-	  	  
-	  }
-      else{
-
-	      console.log('User created!');
-          res.send(200 ,{msg:"User created"})
-        
-	  
-      }
-	});
-})
-
-
-app.post('/register1' ,function(req,res){
    console.log(req.body);
    	var p = {
 	  username: req.body.name,
@@ -185,60 +129,23 @@ app.post('/register1' ,function(req,res){
             res.send(500,{msg:'Email already taken'})
 	  	  }
 	  	  else{
-	  	  	res.send(500,{msg:err.message})
+	  	  	res.render('notification.ejs',{val:err.message})
 	  	  }
 	  	  
 	  }
       else{
 
 	      console.log('User created!');
-          res.send(200 ,{msg:"User created"})
+          	res.render('notification.ejs',{val:"User Created"})
         
 	  
       }
 	});
 })
 
-app.get('/register1' ,function(req,res){
-   res.render('register1.ejs')
-});
 
 
-
-
-//Handling inside the fcn only second way of handling passport js 
-
-// app.post('/login', function(req, res, next) {
-//   passport.authenticate('local', function(err, user, info) {
-//     if (err) {
-//       return next(err); // will generate a 500 error
-//     }
-//     // Generate a JSON response reflecting authentication status
-//     if (! user) {
-//       return res.send({ success : false, message : 'authentication failed' });
-//     }
-//     // ***********************************************************************
-//     // "Note that when using a custom callback, it becomes the application's
-//     // responsibility to establish a session (by calling req.login()) and send
-//     // a response."
-//     // Source: http://passportjs.org/docs
-//     // ***********************************************************************
-//     req.login(user, loginErr => {
-//       if (loginErr) {
-//         return next(loginErr);
-//       }
-//       return res.send({ success : true, message : 'authentication succeeded' });
-//     });      
-//   })(req, res, next);
-// });
-
-
-
-app.get('/login1' ,function(req,res){
-   res.render('login1.ejs')
-});
-
-app.post('/login1', passport.authenticate('local'), function(req, res) {
+app.post('/login', passport.authenticate('local'), function(req, res) {
   res.redirect('/dashboard');
 });
 
@@ -276,6 +183,106 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(user, done) {
     done(null, user);
 })
-
 }// module.exports
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+// app.post('/register' ,function(req,res){
+// 	console.log(req.body);
+// 	var p = {
+// 	  username: req.body.name,
+// 	  email :req.body.email,
+// 	  password:req.body.password
+// 	}
+
+// 	console.log("pppp" ,p)
+// 	var newUser = Users(p);
+
+//  //    var newUser = Users({
+// 	//   username: 'starlord55',
+// 	//   email :'shivigoel75965@gm.com',
+// 	//   password:'2222222'
+// 	// });
+
+// 	// save the user
+// 	newUser.save(function(err) {
+// 	  if (err) {
+// 	  	  console.log("errr" ,err);
+// 	  	  if(err.name=='BulkWriteError'){
+//             res.send(500,{msg:'Email already taken'})
+// 	  	  }
+// 	  	  else{
+// 	  	  	res.send(500,{msg:err.message})
+// 	  	  }
+	  	  
+// 	  }
+//       else{
+
+// 	      console.log('User created!');
+//           res.redirect('/login')
+        
+	  
+//       }
+// 	});
+// })
+
+
+// app.get('/register1' ,function(req,res){
+//    res.render('register1.ejs')
+// });
+
+
+// app.post('/login', function(req, res, next) {
+//   Users.findOne({email:req.body.email},function(err,u){
+//   	console.log(u);
+//   	u.comparePassword(req.body.password,function(err, isMatch) {
+//         if (err){
+//          res.send(500 ,{msg:"Wrong Credentials"})
+//         }
+
+//         else
+//         {
+//          res.send(200,{msg:"ok"})}
+        
+//     });
+//   })
+// });
+
+//Handling inside the fcn only second way of handling passport js 
+
+// app.post('/login', function(req, res, next) {
+//   passport.authenticate('local', function(err, user, info) {
+//     if (err) {
+//       return next(err); // will generate a 500 error
+//     }
+//     // Generate a JSON response reflecting authentication status
+//     if (! user) {
+//       return res.send({ success : false, message : 'authentication failed' });
+//     }
+//     // ***********************************************************************
+//     // "Note that when using a custom callback, it becomes the application's
+//     // responsibility to establish a session (by calling req.login()) and send
+//     // a response."
+//     // Source: http://passportjs.org/docs
+//     // ***********************************************************************
+//     req.login(user, loginErr => {
+//       if (loginErr) {
+//         return next(loginErr);
+//       }
+//       return res.send({ success : true, message : 'authentication succeeded' });
+//     });      
+//   })(req, res, next);
+// });
+
+
+
+// app.get('/login' ,function(req,res){
+//    res.render('login.ejs')
+// });
+
+
+
+
 

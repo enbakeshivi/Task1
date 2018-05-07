@@ -2,35 +2,37 @@
 <html>
 <head>
     <style>
-	    .list_data { margin-bottom: 2px }
-	    table, th, td { border: 1px solid black }
-	    th { cursor: pointer }
+      .list_data { margin-bottom: 2rem }
+      table, th, td { border: 1px solid #AAA }
+      th { cursor: pointer }
     </style>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.11/angular.min.js"></script>
 </head>
 
 <body ng-app="myApp" ng-controller="RecordCtrl" ng-init="All();">
+    
+     <header>
+   <% include header.ejs %>
+   </header>
+   
+   <div style="background-color:#6a5acd; min-height: 60vw">
     <button style = "float:right" ng-click="Logout()">Logout</button>
-    <div class="list_data">
-        <h1>All Tasks</h1>
-        <table>
-            <tr>
-                <th ng-click="type = 'name'; reverse = !reverse">Task Name &#9650;&#9660;</th>
-                <th>Description</th> 
-                <th>EDIT</th>
-                <th>DELETE</th>
-            </tr>
-            <tr ng-repeat="record in records | orderBy:type:reverse">
-                <td>{{record.name}}</td>
-                <td>{{record.description}}</td>
-                 <td><button ng-click="Edit(record)">Edit</button></td>
-                <td><button ng-click="Delete(record._id)">Delete</button></td>
-            </tr>
-        </table>
-    </div>
-  
-    <div class="add_data">
-        <h1>Add Task</h1>
-        <form ng-submit="Add(data)">
+
+       <div class="col-md-3">
+       </div>
+       <div class="add_data col-md-6">
+        <h1 style="color: white">Add Task</h1>
+     <!--    <form ng-submit="Add(data)">
 
            <input type="hidden" name="id" ng-model="data._id">
             <div class="field">
@@ -45,15 +47,65 @@
                 <button type="submit">{{value}}</button>
                 <button ng-click="Reset()">Reset</button>
             </div>
-        </form>
+        </form> -->
+
+
+          <form ng-submit="Add(data)">
+           <input type="hidden" name="id" ng-model="data._id">
+           <div class="form-group">
+             <label for="name">Task Name: </label>
+             <input id="name" type="text" class="form-control" placeholder="Task Name" ng-model="data.name">
+            </div>
+            <br>
+
+             <div class="form-group">
+           <label for="description">Description: </label>
+            <input id="description" type="text" class="form-control" placeholder="Description" ng-model="data.description">
+             </div>
+             <br>
+             <br>
+             <button type="submit" class="btn btn-block btn-green">{{value}}</button>
+             <button ng-click="Reset()" class="btn btn-block btn-green">RESET</button>
+             </form>
+
+
+
+
+              <div class="list_data">
+        <h1 style="color: white">All Tasks</h1>
+        <table class="table">
+            <tr>
+                <th ng-click="type = 'name'; reverse = !reverse">Task Name &#9650;&#9660;</th>
+                <th>Description</th> 
+                <th>EDIT</th>
+                <th>DELETE</th>
+            </tr>
+            <tr ng-repeat="record in records | orderBy:type:reverse">
+                <td>{{record.name}}</td>
+                <td>{{record.description}}</td>
+                 <td><button ng-click="Edit(record)">Edit</button></td>
+                <td><button ng-click="Delete(record._id)">Delete</button></td>
+            </tr>
+        </table>
+</div>
     </div>
 
-	<script>
+<div class="col-md-3">
+</div>
 
+   
+</div>
+    <footer>
+    <% include footer.ejs %>
+    </footer>
+    
+  
+ 
+
+ 
+  <script>
     var app = angular.module('myApp', []);
     app.controller('RecordCtrl', function($scope ,$http) {
-
-
     $scope.value = "Add"
     $scope.Add = function (data) {
     if($scope.value=='Add'){
@@ -66,37 +118,25 @@
         $scope.All();
         alert($scope.myWelcome)
        });
-
   }
-
-
   else if($scope.value=='Update'){
       $http.post("/edit",data)
       .then(function(response) {
         $scope.myWelcome = response.data.msg;
         
-
         $scope.Reset();
         $scope.All();
         alert($scope.myWelcome)
-
        });
-
-
   }
-
   }
-
     $scope.All = function () {
      $http.get("/all")
       .then(function(response) {
         $scope.records = response.data;
         $scope.Reset();
        });
-
   }
-
-
      $scope.Edit = function (x) {
      console.log("i came here" ,x);
      $scope.data={
@@ -105,18 +145,14 @@
         id:x._id
      }
      $scope.value = "Update"
-
   }
-
    $scope.Delete = function (x) {
-
     if (confirm("You Sure you want to delete!")) {
     let data = {id:x}
      $http.post("/delete",data)
       .then(function(response) {
         $scope.myWelcome = response.data.msg;
         
-
         $scope.Reset();
         $scope.All();
         alert($scope.myWelcome)
@@ -125,25 +161,19 @@
     } else {
        return;
     }
-
-
  
-
   }
-
  $scope.Reset = function () {
             $scope.data = '';
             $scope.value = 'Add';
         }
-
 $scope.Logout = function(){
       $http.get("/logout")
       .then(function(response) {
       })
    }
-
     
-	})
-	</script>
+  })
+  </script>
 </body>
 </html>
