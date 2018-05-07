@@ -7,12 +7,17 @@ var LocalStrategy = require('passport-local').Strategy;
 module.exports= function(app){
 
 app.get('/' ,function(req,res,next){
- res.render('login.ejs')
+ 	if(req.isAuthenticated()){
+		res.render('dashboard.ejs')
+	}
+	else{
+		res.render('login.ejs')
+	}
 });
 
 app.get('/logout', function(req, res) {
   req.logout();
-  res.render('/login.ejs');
+  res.send(200,{msg:"logout"});
 });
 
 
@@ -47,7 +52,8 @@ app.post('/add' ,function(req,res){
 	     var newTask = Task({
 	      user_id:req.user._id,
 	      name:req.body.name,
-	      description :req.body.description
+	      description :req.body.description,
+	      date:req.body.date
 	});
 
 	newTask.save(function(err) {
@@ -186,101 +192,6 @@ passport.deserializeUser(function(user, done) {
 }// module.exports
 
 
-
-///////////////////////////////////////////////////////////////////////////////////////////
-
-// app.post('/register' ,function(req,res){
-// 	console.log(req.body);
-// 	var p = {
-// 	  username: req.body.name,
-// 	  email :req.body.email,
-// 	  password:req.body.password
-// 	}
-
-// 	console.log("pppp" ,p)
-// 	var newUser = Users(p);
-
-//  //    var newUser = Users({
-// 	//   username: 'starlord55',
-// 	//   email :'shivigoel75965@gm.com',
-// 	//   password:'2222222'
-// 	// });
-
-// 	// save the user
-// 	newUser.save(function(err) {
-// 	  if (err) {
-// 	  	  console.log("errr" ,err);
-// 	  	  if(err.name=='BulkWriteError'){
-//             res.send(500,{msg:'Email already taken'})
-// 	  	  }
-// 	  	  else{
-// 	  	  	res.send(500,{msg:err.message})
-// 	  	  }
-	  	  
-// 	  }
-//       else{
-
-// 	      console.log('User created!');
-//           res.redirect('/login')
-        
-	  
-//       }
-// 	});
-// })
-
-
-// app.get('/register1' ,function(req,res){
-//    res.render('register1.ejs')
-// });
-
-
-// app.post('/login', function(req, res, next) {
-//   Users.findOne({email:req.body.email},function(err,u){
-//   	console.log(u);
-//   	u.comparePassword(req.body.password,function(err, isMatch) {
-//         if (err){
-//          res.send(500 ,{msg:"Wrong Credentials"})
-//         }
-
-//         else
-//         {
-//          res.send(200,{msg:"ok"})}
-        
-//     });
-//   })
-// });
-
-//Handling inside the fcn only second way of handling passport js 
-
-// app.post('/login', function(req, res, next) {
-//   passport.authenticate('local', function(err, user, info) {
-//     if (err) {
-//       return next(err); // will generate a 500 error
-//     }
-//     // Generate a JSON response reflecting authentication status
-//     if (! user) {
-//       return res.send({ success : false, message : 'authentication failed' });
-//     }
-//     // ***********************************************************************
-//     // "Note that when using a custom callback, it becomes the application's
-//     // responsibility to establish a session (by calling req.login()) and send
-//     // a response."
-//     // Source: http://passportjs.org/docs
-//     // ***********************************************************************
-//     req.login(user, loginErr => {
-//       if (loginErr) {
-//         return next(loginErr);
-//       }
-//       return res.send({ success : true, message : 'authentication succeeded' });
-//     });      
-//   })(req, res, next);
-// });
-
-
-
-// app.get('/login' ,function(req,res){
-//    res.render('login.ejs')
-// });
 
 
 

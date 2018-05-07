@@ -22,7 +22,9 @@
 <body ng-app="myApp" ng-controller="RecordCtrl" ng-init="All();">
     
      <header>
-   <% include header.ejs %>
+ <!-- <%- include("header",{title:"your_title"}) %> -->
+
+  <!-- <% include header.ejs %> -->
    </header>
    
    <div style="background-color:#6a5acd; min-height: 60vw">
@@ -32,23 +34,7 @@
        </div>
        <div class="add_data col-md-6">
         <h1 style="color: white">Add Task</h1>
-     <!--    <form ng-submit="Add(data)">
-
-           <input type="hidden" name="id" ng-model="data._id">
-            <div class="field">
-                <label for="name">Task Name: </label>
-                <input id="name" type="text" placeholder="Task Name" ng-model="data.name">
-            </div>
-            <div class="field">
-                <label for="description">Description: </label>
-                <input id="description" type="text" placeholder="Description" ng-model="data.description">
-            </div>
-            <div class="action">
-                <button type="submit">{{value}}</button>
-                <button ng-click="Reset()">Reset</button>
-            </div>
-        </form> -->
-
+   
 
           <form ng-submit="Add(data)">
            <input type="hidden" name="id" ng-model="data._id">
@@ -62,6 +48,11 @@
            <label for="description">Description: </label>
             <input id="description" type="text" class="form-control" placeholder="Description" ng-model="data.description">
              </div>
+           <div class="form-group">
+           <label for="description">Date: </label>
+            <input  type="date" id="date" type="text" class="form-control" placeholder="Date" ng-model="data.date">
+             </div>
+    
              <br>
              <br>
              <button type="submit" class="btn btn-block btn-green">{{value}}</button>
@@ -77,12 +68,14 @@
             <tr>
                 <th ng-click="type = 'name'; reverse = !reverse">Task Name &#9650;&#9660;</th>
                 <th>Description</th> 
+                <th>Date</th> 
                 <th>EDIT</th>
                 <th>DELETE</th>
             </tr>
             <tr ng-repeat="record in records | orderBy:type:reverse">
                 <td>{{record.name}}</td>
                 <td>{{record.description}}</td>
+                <td>{{record.date | date:"dd/MM/yyyy"}}</td>
                  <td><button ng-click="Edit(record)">Edit</button></td>
                 <td><button ng-click="Delete(record._id)">Delete</button></td>
             </tr>
@@ -170,6 +163,10 @@
 $scope.Logout = function(){
       $http.get("/logout")
       .then(function(response) {
+        if(response.data.msg=='logout'){
+        window.location.href='/login';
+        alert("You have successfully logged out!!")
+      }
       })
    }
     
